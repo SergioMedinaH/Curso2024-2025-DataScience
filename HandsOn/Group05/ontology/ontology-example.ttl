@@ -1,0 +1,58 @@
+@prefix : <http://www.knowledgegraphs/ontology/> .
+@prefix cls: <http://www.knowledgegraphs.com/ontology/centrosydesfibriladores/classes#> .
+@prefix pr: <http://www.knowledgegraphs.com/ontology/centrosydesfibriladores/properties#> .
+@prefix is: <http://www.knowledgegraphs.com/ontology/centrosydesfibriladores/instances#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix mod: <https://w3id.org/mod#> .
+@base <http://www.knowledgegraphs/ontology/> .
+
+: a owl:Ontology .
+
+is:EndocrinologiaCH0018 a cls:Endocrinologia ;
+    rdfs:label "Endocrinología CH0018" .
+
+is:Parla a cls:Municipio ;
+    rdfs:label "Parla" .
+
+is:Direccion1 a cls:Direccion ;
+    rdfs:label "Direccion 1" ;
+    pr:perteneceA is:Parla ;
+    pr:tipoDireccion "Calle"^^xsd:string ;
+    pr:nombreDireccion "de Juan Bravo"^^xsd:string ;
+    pr:numeroDireccion 49 ;
+    pr:codigoPostal 28006 ;
+    pr:coordenadaX 442633.0 ;
+    pr:coordenadaY 447600.0 .
+
+is:CentrodeSalud1 rdf:type cls:CentrodeSalud ;
+    rdfs:label "Centro de salud 1" ;
+    pr:especializadoEn is:EndocrinologiaCH0018 ;
+    pr:localizadoEn is:Direccion1 ;
+    pr:idCentro "SS01607"^^xsd:string ;
+    pr:tipoCentro "Hospital general"^^xsd:string .
+
+is:Establecimiento1 a cls:Establecimiento ;
+    rdfs:label "Establecimiento 1" ;
+    pr:tipoEstablecimiento "Otros"^^xsd:string ;
+    pr:tipoTitularidad "Privada"^^xsd:string .
+
+is:Madrid a cls:Municipio ;
+    rdfs:label "Madrid" .
+
+is:Direccion2 a cls:Direccion ;
+    rdfs:label "Direccion 2" ;
+    pr:perteneceA is:Madrid ;
+    pr:tipoDireccion "Calle"^^xsd:string ;
+    pr:nombreDireccion "de Suero de Quiñones"^^xsd:string ;
+    pr:numeroDireccion 34 ;
+    pr:codigoPostal 28002 ;
+    pr:coordenadaX 443575.0 ;
+    pr:coordenadaY 4477573.0 .
+
+is:Desfibrilador1 a cls:Desfibrilador ;
+    rdfs:label "Desfibrilador 1" ;
+    pr:albergadoEn is:Establecimiento1 ;
+    pr:localizadoEn is:Direccion2 ;
+    pr:idDesfibrilador "2018-1577"^^xsd:string .

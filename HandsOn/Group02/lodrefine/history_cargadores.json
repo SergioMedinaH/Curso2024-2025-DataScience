@@ -1,0 +1,187 @@
+[
+  {
+    "op": "core/text-transform",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "UBICACIÓN",
+    "expression": "grel:value.replace(/\\s*\\(.*?\\)\\s*/, \" \")",
+    "onError": "keep-original",
+    "repeat": false,
+    "repeatCount": 10,
+    "description": "Text transform on cells in column UBICACIÓN using expression grel:value.replace(/\\s*\\(.*?\\)\\s*/, \" \")"
+  },
+  {
+    "op": "core/column-addition",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "baseColumnName": "UBICACIÓN",
+    "expression": "grel:value + \", Madrid\"",
+    "onError": "set-to-blank",
+    "newColumnName": "DIRECCIÓN COMPLETA",
+    "columnInsertIndex": 6,
+    "description": "Create column DIRECCIÓN COMPLETA at index 6 based on column UBICACIÓN using expression grel:value + \", Madrid\""
+  },
+  {
+    "op": "core/column-addition-by-fetching-urls",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "baseColumnName": "DIRECCIÓN COMPLETA",
+    "urlExpression": "grel:'https://nominatim.openstreetmap.org/search?format=json&limit=1&q=' + escape(value, \"url\")",
+    "onError": "set-to-blank",
+    "newColumnName": "json",
+    "columnInsertIndex": 7,
+    "delay": 1500,
+    "cacheResponses": true,
+    "httpHeadersJson": [
+      {
+        "name": "authorization",
+        "value": ""
+      },
+      {
+        "name": "if-modified-since",
+        "value": ""
+      },
+      {
+        "name": "accept-language",
+        "value": ""
+      },
+      {
+        "name": "accept-encoding",
+        "value": ""
+      },
+      {
+        "name": "user-agent",
+        "value": "OpenRefine 3.8.4 [TRUNK]"
+      },
+      {
+        "name": "accept",
+        "value": "*/*"
+      },
+      {
+        "name": "accept-charset",
+        "value": ""
+      }
+    ],
+    "description": "Create column json at index 7 by fetching URLs based on column DIRECCIÓN COMPLETA using expression grel:'https://nominatim.openstreetmap.org/search?format=json&limit=1&q=' + escape(value, \"url\")"
+  },
+  {
+    "op": "core/column-addition",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "baseColumnName": "json",
+    "expression": "grel:value.parseJson()[0].lon",
+    "onError": "set-to-blank",
+    "newColumnName": "LONGITUD",
+    "columnInsertIndex": 8,
+    "description": "Create column LONGITUD at index 8 based on column json using expression grel:value.parseJson()[0].lon"
+  },
+  {
+    "op": "core/column-addition",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "baseColumnName": "json",
+    "expression": "grel:value.parseJson()[0].lat",
+    "onError": "set-to-blank",
+    "newColumnName": "LATITUD",
+    "columnInsertIndex": 8,
+    "description": "Create column LATITUD at index 8 based on column json using expression grel:value.parseJson()[0].lat"
+  },
+  {
+    "op": "core/column-removal",
+    "columnName": "json",
+    "description": "Remove column json"
+  },
+  {
+    "op": "core/column-removal",
+    "columnName": "ESTADO",
+    "description": "Remove column ESTADO"
+  },
+  {
+    "op": "core/column-removal",
+    "columnName": "ID_Punto",
+    "description": "Remove column ID_Punto"
+  },
+  {
+    "op": "core/column-removal",
+    "columnName": "COD_DIS",
+    "description": "Remove column COD_DIS"
+  },
+  {
+    "op": "core/column-removal",
+    "columnName": "COD_BAR",
+    "description": "Remove column COD_BAR"
+  },
+  {
+    "op": "core/column-removal",
+    "columnName": "HORARIO",
+    "description": "Remove column HORARIO"
+  },
+  {
+    "op": "core/column-removal",
+    "columnName": "FECHA_EDICION",
+    "description": "Remove column FECHA_EDICION"
+  },
+  {
+    "op": "core/column-removal",
+    "columnName": "FECHA_ALTA",
+    "description": "Remove column FECHA_ALTA"
+  },
+  {
+    "op": "core/column-removal",
+    "columnName": "FECHA_APERTURA",
+    "description": "Remove column FECHA_APERTURA"
+  },
+  {
+    "op": "core/column-removal",
+    "columnName": "INFO_FECHA_APERTURA",
+    "description": "Remove column INFO_FECHA_APERTURA"
+  },
+  {
+    "op": "core/column-removal",
+    "columnName": "INFO_ADICIONAL",
+    "description": "Remove column INFO_ADICIONAL"
+  },
+  {
+    "op": "core/column-addition",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "baseColumnName": "CARACTERÍSTICAS_EQUIPO",
+    "expression": "grel:toString(forEach(value.find(/\\d+\\s*kW|\\d+\\s*KW/).join(\",\").replace(\" kW\",\"\").replace(\"kW\",\"\").replace(\"KW\",\"\").replace(\" KW\",\"\").split(\",\"), v, v.toNumber()).sort().reverse()[0]) + \" kW\"",
+    "onError": "set-to-blank",
+    "newColumnName": "POTENCIA_MAX",
+    "columnInsertIndex": 10,
+    "description": "Create column POTENCIA_MAX at index 10 based on column CARACTERÍSTICAS_EQUIPO using expression grel:toString(forEach(value.find(/\\d+\\s*kW|\\d+\\s*KW/).join(\",\").replace(\" kW\",\"\").replace(\"kW\",\"\").replace(\"KW\",\"\").replace(\" KW\",\"\").split(\",\"), v, v.toNumber()).sort().reverse()[0]) + \" kW\""
+  },
+  {
+    "op": "core/mass-edit",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "POTENCIA_MAX",
+    "expression": "value",
+    "edits": [
+      {
+        "from": [
+          "50.0 kW"
+        ],
+        "fromBlank": false,
+        "fromError": false,
+        "to": "50 kW"
+      }
+    ],
+    "description": "Mass edit cells in column POTENCIA_MAX"
+  }
+]
